@@ -2,6 +2,17 @@ GeneQC Python Tutorial
 
 Dependencies and preliminary data
 The GeneQC package requires Python 3 to execute, includes the blast+ and SAMtools libraries, GeneQC takes Reference Genome, Annotation file, Read alignment (mapped by HISAT2, compressed to BAM file by SAMtools) as input, you may take the following steps to obtain the preliminary files. The GeneQC will generate feature extraction and modeling results(D-score).
+
+Hardware Requirement:
+
+High performace cluster preferred. Or: CPU: 2.0 GHz or better, RAM: 16GB or above, Hard disk: 100GB or above.
+
+Installation:
+
+For using high performace cluster
+1. Download the program by clicking "Clone or download" above.
+2. Upload downloaded "GeneQC-master.zip" to Linux Server.
+
 The GeneQC also requires Scikit-learn package. Please following this link to install scikit-learn. (http://scikit-learn.org/stable/install.html). Instead installing any package for Python, user can use anaconda to execute the GeneQC (Recommend). Download link: (https://www.anaconda.com/download/)
 
 Instructions
