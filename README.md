@@ -1,6 +1,16 @@
 # GeneQC Tutorial
 
-Dependencies and preliminary data The GeneQC package requires Python 3 to execute, includes the blast+ and SAMtools libraries, GeneQC takes Reference Genome, Annotation file, Read alignment (mapped by HISAT2, compressed to BAM file by SAMtools) as input, you may take the following steps to obtain the preliminary files. The GeneQC will generate feature extraction and modeling results(D-score).
+The GeneQC package requires Python 3 to execute, includes the blast+ and SAMtools libraries, GeneQC takes Reference Genome, Annotation file, Read alignment (mapped by HISAT2, compressed to BAM file by SAMtools) as input, you may take the following steps to obtain the preliminary files. The GeneQC will generate feature extraction and modeling results(D-score).
+
+The package contains:
+
+1. Minimum package of Blast for makeblastdb and Blastn
+
+2. Samtools package version 1.2.1
+
+3. GeneQC python code
+
+4. A special script "extract_transcript_seq_gff.py" which used to transform the genome sequences to transcript sequences and the corresponding annotation file.
 
 ## Hardware Requirement:
 
