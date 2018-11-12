@@ -22,9 +22,9 @@ GeneQC package requires Python 3 to execute. We recommended user use anaconda 5 
 
 1. Check available modules in the cluster:
 ```{r,engine='bash',eval=FALSE}
-module aval
+module avail
 ```
-2. find anaconda in available modules and load it. (for example, if anaconda5/5.0.0-3.6 is in the available modules list):
+2. find anaconda (4 or above) in available modules and load it. (for example, if anaconda5/5.0.0-3.6 is in the available modules list):
 ```{r,engine='bash',eval=FALSE, module}
 module load anaconda5/5.0.0-3.6
 ```
@@ -53,16 +53,17 @@ For running GeneQC for plant data: Three inputs (data) are required: reference g
 Move to the path of folder of "GeneQC_Python"
 ```{r,engine='bash',eval=FALSE}
 cd your_folder_path_of_"GeneQC_Python"
+module load anaconda(chose_your_version)
 ```
 
 Run GeneQC:
 ```{r,engine='bash',eval=FALSE}
-GeneQC2.py [1] [reference genome] [standard gff annotation file] [sam or bam file]
+python GeneQC2.py [1] [reference genome] [standard gff annotation file] [sam or bam file]
 ```
 
 Example: A.thaliana
 ```{r,engine='bash',eval=FALSE}
-GeneQC2.py 1 Athaliana_167_TAIR9.fa Athaliana_167_TAIR10.gene.gff3 ERR1297323.bam
+python GeneQC2.py 1 Athaliana_167_TAIR9.fa Athaliana_167_TAIR10.gene.gff3 ERR1297323.bam
 ```
 
 The outputs will be generated in this folder as well. ERR1297323_out.txt will be feature extraction results. ERR1297323_out.csv will be D-scoure results.
@@ -74,40 +75,43 @@ For running GeneQC for animal data: Three inputs (data) are required: reference 
 Move to the path of folder of "GeneQC_Python"
 ```{r,engine='bash',eval=FALSE}
 cd your_folder_path_of_"GeneQC_Python"
+module load anaconda(chose_your_version)
 ```
 
 Step1: Create new defined transcripts and new defined transcripts annotation:
 ```{r,engine='bash',eval=FALSE}
-extract_transcript_seq_gff.py [reference genome] [standard gff annotation file] [new defined transcripts sequence file] [new defined transcripts gff annotation file]
+python extract_transcript_seq_gff.py [reference genome] [standard gff annotation file] [new defined transcripts sequence file] [new defined transcripts gff annotation file]
 ```
 
 Example: Humo sapiens
 ```{r,engine='bash',eval=FALSE}
-extract_transcript_seq_gff.py GCF_000001405.37_GRCh38.p11_genomic.fna GCF_000001405.37_GRCh38.p11_genomic.gff human_transcripts_seq.fa human_transcripts_seq.gff
+python extract_transcript_seq_gff.py GCF_000001405.37_GRCh38.p11_genomic.fna GCF_000001405.37_GRCh38.p11_genomic.gff human_transcripts_seq.fa human_transcripts_seq.gff
 ```
 
 ### For Bulk RNA-seq data:
-Step2: Do RNA-seq mapping work with the new mapping results, use following commands:
+Step2: Do RNA-seq mapping work with the new mapping results, use following commands (the example used aligner HISAT2):
 ```{r,engine='bash',eval=FALSE}
+module load hisat2
 hisat2-build -f human_transcripts_seq.fa ./hisatindex/Humo
 hisat2 -x ./hisatindex/Humo -k 10 -p 40 -1 SRR6029567_1.fastq -2 SRR6029567_2.fastq -S SRR6029567.sam
 ```
 
 Step3: Run GeneQC:
 ```{r,engine='bash',eval=FALSE}
-GeneQC2.py 2 human_transcripts_seq.fa human_transcripts_seq.gff SRR6029567.sam
+python GeneQC2.py 2 human_transcripts_seq.fa human_transcripts_seq.gff SRR6029567.sam
 ```
 
 ### For Single cell RNA-seq data:
-Step2: Do RNA-seq mapping work with the new mapping results, use following commands:
+Step2: Do RNA-seq mapping work with the new mapping results, use following commands (the example used aligner HISAT2):
 ```{r,engine='bash',eval=FALSE}
+module load hisat2
 hisat2-build -f human_transcripts_seq.fa ./hisatindex/Humo
 hisat2 -x ./hisatindex/Humo -k 10 SRR491087.fastq -S SRR491087.sam
 ```
 
 Step3: Run GeneQC:
 ```{r,engine='bash',eval=FALSE}
-GeneQC2.py 2 human_transcripts_seq.fa human_transcripts_seq.gff SRR491087.sam
+python GeneQC2.py 2 human_transcripts_seq.fa human_transcripts_seq.gff SRR491087.sam
 ```
 
 The outputs will be generated in this folder as well. SRR6029567_out.txt will be feature extraction results. SRR6029567_out.csv will be D-scoure results.
