@@ -46,6 +46,13 @@ unzip master.zip
 
 Seven sample species of data (Reference Genome, Annotation file, Read alignment (mapped by HISAT2, compressed to BAM file by SAMtools) can be downloaded from our website (http://bmbl.sdstate.edu/GeneQC/result.html).
 
+For example, here we want to download RNA-Seq data of Homo sapines specie
+
+```{r,engine='bash',eval=FALSE}
+cd your_folder_path_of_"GeneQC_Python"
+wget http://bmbl.sdstate.edu/GeneQC/GeneQC_files/data/Homo_sapiens/Humo_raw_data.tar.gz
+gunzip -c Humo_raw-data.tar.gz | tar xopf -
+```
 ## Instructions (Plant Genome)
 
 For running GeneQC for plant data: Three inputs (data) are required: reference genome, annotation file, sam or bam file should be uploaded to folder of "GeneQC_Python" under the GeneQC-master folder in the cluster.
