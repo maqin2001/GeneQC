@@ -39,7 +39,7 @@ wget https://github.com/maqin2001/geneqc/archive/master.zip
 ```
 Unzip the file:
 ```{r,engine='bash',eval=FALSE, unzip}
-unzip GeneQC-master.zip
+unzip master.zip
 ```
 
 ## Input data preperation
