@@ -99,4 +99,4 @@ f2.close()
 f3.close()
 f4.close()
 
-os.mkdir(hisatindex)
+os.mkdir("hisatindex")
