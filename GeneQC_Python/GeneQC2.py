@@ -5,6 +5,7 @@ import math
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import ElasticNet
+from sklearn import mixture
 
 # find the path
 Script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -92,9 +93,6 @@ if(option == "1"):
                         print(arraystart[i],file=f3,end="")
                     for i in range(ps+1,pe):
                         print(genome[array1[0]][i],file=f3,end="")
-#                   for i in range(0,pe2):
-#                       print(arrayend[i],file=f3,end="")
-#                       i+=1
                 print("\n",file=f3,end="")
     f2.close()
     f3.close()
@@ -248,36 +246,39 @@ if(option == "1"):
         array1=re.split(r'\s+',line)
         if(re.match(record,array1[0])):
             inp = samout+array1[1]
-            file=open(inp,"r")
-            line2=file.readline()
-            while line2:
-                array2=re.split(r'\s+',line2)
-                if array2[0] in gene:
-                    del gene[array2[0]]
+            if os.path.exists(inp):
+                file=open(inp,"r")
                 line2=file.readline()
-            file.close()
+                while line2:
+                    array2=re.split(r'\s+',line2)
+                    if array2[0] in gene:
+                        del gene[array2[0]]
+                    line2=file.readline()
+                file.close()
         else:
             num=len(gene)
             print(record+"\t",num,file=file1)
             gene={}
             record=array1[0]
             inp = samout+array1[0]
-            file=open(inp,"r")
-            line2=file.readline()
-            while line2:
-                array2=re.split(r'\s+',line2)
-                gene[array2[0]]=1
+            if os.path.exists(inp):
+                file=open(inp,"r")
                 line2=file.readline()
-            file.close()
+                while line2:
+                    array2=re.split(r'\s+',line2)
+                    gene[array2[0]]=1
+                    line2=file.readline()
+                file.close()
             inp = samout+array1[1]
-            file=open(inp,"r")
-            line2=file.readline()
-            while line2:
-                array2=re.split(r'\s+',line2)
-                if array2[0] in gene:
-                    del gene[array2[0]]
+            if os.path.exists(inp):
+                file=open(inp,"r")
                 line2=file.readline()
-            file.close
+                while line2:
+                    array2=re.split(r'\s+',line2)
+                    if array2[0] in gene:
+                        del gene[array2[0]]
+                    line2=file.readline()
+                file.close
         line=group.readline()
     print(record+"\t",num,file=file1)
     group.close()
@@ -405,11 +406,24 @@ if(option == "1"):
         score = regr.score(X,y)
         scores.append(score)
     bestalpha = alpha_range[np.argmax(scores)]
+
     regr = ElasticNet(alpha=bestalpha)
     regr.fit(X,y)
     Dscore = regr.predict(X)
     Dscore = Dscore.reshape(-1,1)
     data['Dscore']=Dscore
+    del data["D4"]
+    X=np.array(data["Dscore"]).reshape(-1,1)
+    GMresult=mixture.GaussianMixture(n_components=3).fit_predict(X)
+    data["Category"]=GMresult
+    rank=data.sort_values(by=["Dscore"])
+    rank=rank.drop_duplicates(subset=["Category"])
+    low= rank["Category"].iloc[0]
+    medium= rank["Category"].iloc[1]
+    high= rank["Category"].iloc[2]
+    data.Category[data.Category == high] = "High"
+    data.Category[data.Category == medium] = "Medium"
+    data.Category[data.Category == low] = "Low"
     pd.DataFrame.to_csv(data,Script_dir+"/"+indexname+"_out.csv")
 
     os.remove(Script_dir+"/"+bam)
@@ -755,6 +769,18 @@ elif(option=="2"):
     Dscore = regr.predict(X)
     Dscore = Dscore.reshape(-1,1)
     data['Dscore']=Dscore
+    del data["D4"]
+    X=np.array(data["Dscore"]).reshape(-1,1)
+    GMresult=mixture.GaussianMixture(n_components=3).fit_predict(X)
+    data["Category"]=GMresult
+    rank=data.sort_values(by=["Dscore"])
+    rank=rank.drop_duplicates(subset=["Category"])
+    low= rank["Category"].iloc[0]
+    medium= rank["Category"].iloc[1]
+    high= rank["Category"].iloc[2]
+    data.Category[data.Category == high] = "High"
+    data.Category[data.Category == medium] = "Medium"
+    data.Category[data.Category == low] = "Low"
     pd.DataFrame.to_csv(data,Script_dir+"/"+indexname+"_out.csv")
 
     os.remove(Script_dir+"/"+bam)
